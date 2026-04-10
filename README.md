@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Taller en clase: Auth + Roles
 
 ## Requisitos
@@ -75,3 +76,6 @@ Request (reemplaza TOKEN):
 curl -s http://localhost:3000/request -H "Authorization: Bearer TOKEN"
 ```
 
+=======
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Wxaf-Cfj)
+>>>>>>> 7d6a78e96ee7f8a337131ad9aa9d9808c92e651d
