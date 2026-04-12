@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taller Auth + Roles</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #0b1220;
+        --card: #111a2e;
+        --text: #e9eefc;
+        --muted: #a9b4d0;
+        --border: rgba(255, 255, 255, 0.12);
+        --accent: #6aa7ff;
+        --danger: #ff6a7a;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans",
+          sans-serif;
+        background: radial-gradient(1200px 800px at 20% 10%, #142043, var(--bg));
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 28px 16px 48px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 22px;
+        letter-spacing: 0.2px;
+      }
+      p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      @media (min-width: 900px) {
+        .grid {
+          grid-template-columns: 380px 1fr;
+          align-items: start;
+        }
+      }
+      .card {
+        background: rgba(17, 26, 46, 0.72);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 10px 12px;
+        outline: none;
+      }
+      input:focus {
+        border-color: rgba(106, 167, 255, 0.7);
+        box-shadow: 0 0 0 3px rgba(106, 167, 255, 0.15);
+      }
+      .row {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .btns {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      button {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.primary {
+        background: rgba(106, 167, 255, 0.18);
+        border-color: rgba(106, 167, 255, 0.45);
+      }
+      button.danger {
+        background: rgba(255, 106, 122, 0.12);
+        border-color: rgba(255, 106, 122, 0.45);
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 10px;
+        line-height: 1.35;
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        padding: 1px 6px;
+        border-radius: 8px;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 12px;
+        line-height: 1.35;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .status {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .pill.ok {
+        color: #bfe0ff;
+        border-color: rgba(106, 167, 255, 0.5);
+        background: rgba(106, 167, 255, 0.12);
+      }
+      .pill.bad {
+        color: #ffd1d7;
+        border-color: rgba(255, 106, 122, 0.55);
+        background: rgba(255, 106, 122, 0.12);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Taller: Login + Roles</h1>
+      <p>
+        Este HTML prueba <code>POST /login</code> y <code>GET /request</code> contra tu API local.
+        Usuarios demo: <code>admin/admin123</code> y <code>user/user123</code>.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <div>
+              <label for="username">Username</label>
+              <input id="username" autocomplete="username" placeholder="admin | user" />
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input id="password" type="password" autocomplete="current-password" placeholder="admin123 | user123" />
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="primary" id="btnLogin">Login → guardar token</button>
+            <button id="btnRequest">GET /request (con token)</button>
+            <button class="danger" id="btnClear">Borrar token</button>
+          </div>
+
+          <div class="hint">
+            Si te sale 401 en <code>/request</code>, revisa que tengas token guardado.
+            Si te sale 400 en <code>/login</code>, revisa credenciales o el JSON.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="status">
+            <div id="pillToken" class="pill">Token: (no)</div>
+            <div class="pill">API base: <code id="apiBase"></code></div>
+          </div>
+          <pre id="out">Listo.</pre>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
